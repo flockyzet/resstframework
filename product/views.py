@@ -1,6 +1,6 @@
 import random
 from rest_framework import generics, serializers, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view  
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,9 +14,11 @@ from .serializers import (
 )
 
 
+
 class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategoryWithCountSerializer
+
 
 
 class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -25,9 +27,11 @@ class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
     lookup_field = 'id'
 
 
+
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
 
 
 class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -36,9 +40,11 @@ class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     lookup_field = 'id'
 
 
+
 class ReviewListCreateAPIView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+
 
 
 class ReviewRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -47,11 +53,13 @@ class ReviewRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 
-@api_view(['GET'])
-def product_reviews_api_view(request):
-    products = Product.objects.all()
-    serializer = ProductWithReviewsSerializer(products, many=True)
-    return Response(serializer.data)
+
+class ProductReviewsAPIView(APIView):
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductWithReviewsSerializer(products, many=True)
+        return Response(serializer.data)
+
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -74,9 +82,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
+
 class RegisterView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
+
 
 
 class ConfirmSerializer(serializers.Serializer):
@@ -90,13 +100,14 @@ class ConfirmSerializer(serializers.Serializer):
             user = User.objects.get(username=username)
             confirmation = UserConfirmation.objects.get(user=user)
         except (User.DoesNotExist, UserConfirmation.DoesNotExist):
-            raise serializers.ValidationError("неверный пользователь или код.")
+            raise serializers.ValidationError("неверный пользователь или код")
 
         if confirmation.code != code:
-            raise serializers.ValidationError("неверный код подтверждения.")
+            raise serializers.ValidationError("неверный код подтверждения")
 
         attrs['user'] = user
         return attrs
+
 
 
 class ConfirmUserAPIView(APIView):

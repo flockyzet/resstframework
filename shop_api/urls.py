@@ -29,8 +29,8 @@ urlpatterns = [
     path('api/v1/reviews/', views.ReviewListCreateAPIView.as_view()),
     path('api/v1/reviews/<int:id>/', views.ReviewRetrieveUpdateDestroyAPIView.as_view()),
     
-    path('api/v1/products/reviews/', views.product_reviews_api_view),
-
+    path('api/v1/products/reviews/', views.ProductReviewsAPIView.as_view()),
+    
     path('api/v1/users/register/', views.RegisterView.as_view()),
     path('api/v1/users/confirm/',  views.ConfirmUserAPIView.as_view()),
 ]
