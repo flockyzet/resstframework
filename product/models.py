@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -27,8 +28,18 @@ class Review(models.Model):
         Product, on_delete=models.CASCADE, related_name='reviews'
     )
     stars = models.IntegerField(
-        default=5, validators=[MinValueValidator(1), MaxValueValidator(5)] #оценка с 1 до 5
+        default=5, validators=[MinValueValidator(1), MaxValueValidator(5)] 
     ) 
 
     def __str__(self):
         return f'{self.product.title} - {self.stars} stars'
+
+class UserConfirmation(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='confirmation')
+    code = models.CharField(max_length=6)
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+          
+            self.code = str(random.randint(100000, 999999))
+        super().save(*args, **kwargs)
