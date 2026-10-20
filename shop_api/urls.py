@@ -22,8 +22,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     path('api/v1/categories/', views.CategoryListCreateAPIView.as_view()),
-   
     path('api/v1/categories/<int:id>/', views.CategoryRetrieveUpdateDestroyAPIView.as_view()),
-
-    path('api/v1/products/reviews/', views.product_reviews_api_view)
+    
+    path('api/v1/products/', views.ProductListCreateAPIView.as_view()),
+    path('api/v1/products/<int:id>/', views.ProductRetrieveUpdateDestroyAPIView.as_view()),
+    
+    path('api/v1/reviews/', views.ReviewListCreateAPIView.as_view()),
+    path('api/v1/reviews/<int:id>/', views.ReviewRetrieveUpdateDestroyAPIView.as_view()),
+    
+    path('api/v1/products/reviews/', views.product_reviews_api_view),
 ]
